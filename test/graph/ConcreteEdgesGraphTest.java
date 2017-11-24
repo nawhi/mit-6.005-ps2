@@ -42,4 +42,38 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     
     // TODO tests for operations of Edge
     
+    @SuppressWarnings("unused")
+	@Test 
+    public void testEdgeImmutability() {
+    	String s = "A";
+    	String t = "B";
+    	int w = 2;
+    	Edge e = new Edge(s, t, w);
+    	s = "asdfghjkl";
+    	t = "lkjhgfdsa";
+    	w = 5;
+    	assertEquals("Expected no change in Edge",
+    			e.getSource(), "A");
+    	assertEquals("Expected no change in Edge",
+    			e.getTarget(), "B");
+    	assertEquals("Expected no change in Edge",
+    			e.getWeight(), 2);
+    	
+    	String ss = e.getSource();
+    	String tt = e.getTarget();
+    	int ww = e.getWeight();
+    	
+    	ss += "foobar";
+    	tt += "foobarbaz";
+    	ww += 95;
+    	
+    	assertEquals("Expected no change in Edge",
+    			e.getSource(), "A");
+    	assertEquals("Expected no change in Edge",
+    			e.getTarget(), "B");
+    	assertEquals("Expected no change in Edge",
+    			e.getWeight(), 2);
+    	
+    }
+    
 }

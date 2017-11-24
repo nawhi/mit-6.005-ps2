@@ -59,30 +59,62 @@ public class ConcreteEdgesGraph implements Graph<String> {
 }
 
 /**
- * TODO specification
- * Immutable.
- * This class is internal to the rep of ConcreteEdgesGraph.
- * 
- * <p>PS2 instructions: the specification and implementation of this class is
- * up to you.
+ * Immutable data class internal to the rep of ConcreteEdgesGraph which
+ * describes an edge within the graph. 
  */
 class Edge {
     
-    // TODO fields
+	private final String source;
+	private final String target;
+	private final int weight;
     
-    // Abstraction function:
-    //   TODO
-    // Representation invariant:
-    //   TODO
-    // Safety from rep exposure:
-    //   TODO
+    /*
+     * Abstraction function: 
+     * 	- source = vertex the edge is coming from
+     *  - target = vertex the edge is going to
+     *  - weight = weight of the edge
+     * 
+     * Representation invariant:
+     *  - weight > 0
+     *  - source != target
+     * 
+     * Safety from rep exposure:
+     *  - none needed apparently, see 
+     *  	testEdgeImmutability(). I guess because
+     *  	String and int are themselves immutable
+     */
     
-    // TODO constructor
+	public Edge(String source, String target, int weight) throws IllegalArgumentException {
+		if (weight <= 0)
+			throw new IllegalArgumentException("Requires weight > 0");
+		if (source.equals(target))
+			throw new IllegalArgumentException("Requires source != target");
+		this.source = source;
+		this.target = target;
+		this.weight = weight;
+	}
+	
+	public String getSource() { 
+		return source; 
+	}
+	
+	public String getTarget() { 
+		return target;
+	}
+	
+	public int getWeight() { 
+		return weight;
+	}
+	
+	public boolean checkRep() {
+		return weight > 0 && !source.equals(target);
+	}
     
-    // TODO checkRep
-    
-    // TODO methods
-    
-    // TODO toString()
+	public String toString() {
+		// "Edge source='A' target='B' weight=1
+		return "Edge source='" + source +
+				"' target='" + target +
+				"' weight=" + weight;
+	}
     
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.HashMap;
 import java.util.Set;
 import java.lang.StringBuilder;
@@ -44,7 +43,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
      * @return the index of the edge, or -1 if not found
      */
     private int findEdge(String source, String target) {
-    	for (int i = 0; i < edges.size() - 1; ++i) {
+    	for (int i = 0; i < edges.size(); ++i) {
     		Edge e = edges.get(i);
     		if (e.getSource().equals(source) && e.getTarget().equals(target))
     			return i;

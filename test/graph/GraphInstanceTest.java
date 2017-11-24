@@ -98,7 +98,7 @@ public abstract class GraphInstanceTest {
     	g.add("A");
     	g.add("B");
     	assertEquals("expected 0 return from setting new edge",
-    			g.set("A", "B", 1), 0);
+    			0, g.set("A", "B", 1));
     	
     	// Expect edge value 1 from A to B
     	assertTrue("expected edge from A to B", 
@@ -119,7 +119,7 @@ public abstract class GraphInstanceTest {
     	g.add("B");
     	g.set("A", "B", 1);
     	assertEquals("expected return of previous edge weight",
-    			g.set("A", "B", 1), 1);
+    			1, g.set("A", "B", 1));
     	
     	// Expect edge value 1 from A to B
     	assertTrue("expected edge from A to B", 
@@ -140,7 +140,9 @@ public abstract class GraphInstanceTest {
     	g.add("B");
     	g.set("A", "B", 1);
     	assertEquals("expected return of previous edge weight",
-    			g.set("A", "B", 2), 1);
+    			1, g.set("A", "B", 2));
+    	
+    	
     	
     	// Expect edge value 2 from A to B
     	assertTrue("expected edge from A to B", 
@@ -164,7 +166,7 @@ public abstract class GraphInstanceTest {
     	g.add("B");
     	g.set("A", "B", 1);
     	assertEquals("expected return of previous edge weight",
-    			g.set("A", "B", 0), 1);
+    			1, g.set("A", "B", 0));
     	
     	// Expect no edges in graph
     	assertTrue("expected no edges from A",
@@ -179,7 +181,7 @@ public abstract class GraphInstanceTest {
     	g.add("A");
     	g.add("B");
     	assertEquals("expected 0 return from setting new edge to 0",
-    			g.set("A", "B", 0), 0);
+    			0, g.set("A", "B", 0));
     	
     	// Expect no edges in graph
     	
@@ -216,15 +218,17 @@ public abstract class GraphInstanceTest {
     	g.set("A", "B", 1);
     	g.set("B", "A", 1);
     	
+    	System.out.println(g);
+    	
     	// Check sources and targets
     	assertTrue("expected edge from A to B", 
     			g.targets("A").keySet().contains("B"));
-    	assertTrue("expected exactly 1 edge from A", 
-    			g.targets("A").keySet().size() == 1);
+    	assertEquals("expected exactly 1 edge from A", 
+    			1, g.targets("A").keySet().size());
     	assertTrue("expected edge from B to A",
     			g.targets("B").keySet().contains("A"));
-    	assertTrue("expected exactly 1 edge from B",
-    			g.targets("B").keySet().size() == 1);
+    	assertEquals("expected exactly 1 edge from B",
+    			1, g.targets("B").keySet().size());
 
     	g.remove("A");
     	assertTrue("expected no edges in graph", 

@@ -4,6 +4,7 @@
 package graph;
 
 import static org.junit.Assert.*;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -33,14 +34,11 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     
     // TODO tests for ConcreteEdgesGraph.toString()
     
+    
+    
     /*
      * Testing Edge...
      */
-    
-    // Testing strategy for Edge
-    //   TODO
-    
-    // TODO tests for operations of Edge
     
     @SuppressWarnings("unused")
 	@Test 

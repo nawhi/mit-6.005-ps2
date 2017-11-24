@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.HashMap;
 import java.util.Set;
-
+import java.lang.StringBuilder;
 /**
  * An implementation of Graph.
  * 
@@ -20,41 +22,120 @@ public class ConcreteEdgesGraph implements Graph<String> {
     private final List<Edge> edges = new ArrayList<>();
     
     // Abstraction function:
-    //   TODO
+    //   AF(r) = an ordered pair (V,E)
+    // 		where V = { all v in r.vertices }
+    //		and E = { (e.getSource(), e.getTarget()) for e in edges }
+    //		and there exists a W such that W(e) = e.getWeight() for all e in E.   
+
     // Representation invariant:
-    //   TODO
+    //  - Any graph with v vertices will have at most v(v-1) edges
+    //  - for all e in edges, vertices contains e.source and e.target
     // Safety from rep exposure:
-    //   TODO
+    //  - set() puts all params into immutable Edge instances
+    //  - vertices(), sources(), targets() return copies
+    //  - 
     
-    // TODO constructor
+    // Default constructor will be fine here
     
-    // TODO checkRep
+    /**
+     * Looks for an edge in the 
+     * @param source string of the desired edge's source
+     * @param target string of the desired edge's target
+     * @return the index of the edge, or -1 if not found
+     */
+    private int findEdge(String source, String target) {
+    	for (int i = 0; i < edges.size() - 1; ++i) {
+    		Edge e = edges.get(i);
+    		if (e.getSource().equals(source) && e.getTarget().equals(target))
+    			return i;
+    	}
+    	return -1;
+    }
+    
+    /*
+     * Representation invariant:
+     * - any graph with v vertices will have no more than v(v-1) edges
+     * - the source and target of every edge is in vertices
+     */
+    public boolean checkRep() {
+    	boolean edgeCheck = 
+    			edges.size() <= vertices.size() * (vertices.size() - 1);
+    	boolean vertexCheck = true;
+    	for (Edge e: edges) {
+    		vertexCheck = vertices.contains(e.getSource()) 
+    				&& vertices.contains(e.getTarget());
+    	}
+    	return edgeCheck && vertexCheck;
+    			
+    }
     
     @Override public boolean add(String vertex) {
-        throw new RuntimeException("not implemented");
+    	if (vertices.contains(vertex))
+    		return false;
+        vertices.add(new String(vertex));
+        return true;
     }
     
     @Override public int set(String source, String target, int weight) {
-        throw new RuntimeException("not implemented");
+    	int edgeIx = findEdge(source, target);
+    	if (edgeIx != -1) {
+    		int oldWeight = edges.get(edgeIx).getWeight();
+    		// Edge exists. Update it in-place
+    		if (weight == 0)
+    			edges.remove(edgeIx);
+    		else
+    			edges.set(edgeIx, new Edge(source, target, weight));
+    		return oldWeight;
+    	}
+    	if (weight > 0) {
+    		// No such edge; create new entry & return 0
+    		edges.add(new Edge(source, target, weight));
+    		return 0;
+    	}
+    	// No such edge, and weight was 0: nothing to do
+    	return 0;
     }
     
     @Override public boolean remove(String vertex) {
-        throw new RuntimeException("not implemented");
+    	if (!vertices.contains(vertex))
+    		return false;
+    	vertices.remove(vertex);
+    	// Backwards iteration avoids skipping elements
+    	// when we delete one
+    	for (int i = edges.size() - 1; i >= 0; --i) {
+    		Edge e = edges.get(i);
+    		if (e.getSource().equals(vertex) || e.getTarget().equals(vertex))
+    			edges.remove(i);
+    	}
+    	return true;
     }
     
     @Override public Set<String> vertices() {
-        throw new RuntimeException("not implemented");
+        return new HashSet<String>(vertices);
     }
     
     @Override public Map<String, Integer> sources(String target) {
-        throw new RuntimeException("not implemented");
+        Map<String, Integer> sources = new HashMap<>();
+        edges.forEach(e -> sources.put(
+        		new String(e.getSource()), e.getWeight()));
+        return sources;
     }
     
     @Override public Map<String, Integer> targets(String source) {
-        throw new RuntimeException("not implemented");
+        Map<String, Integer> targets = new HashMap<>();
+        edges.forEach(e -> targets.put(
+        		new String(e.getTarget()), e.getWeight()));
+        return targets;
     }
     
-    // TODO toString()
+    @Override public String toString() {
+    	StringBuilder sb = new StringBuilder("ConcreteEdgesGraph:");
+    	sb.append("vertices={");
+    	vertices.forEach((v) -> sb.append(v + ","));
+    	sb.append("} edges={");
+    	edges.forEach((e) -> sb.append(e + ","));
+    	return sb.append("}").toString();
+    }
     
 }
 
@@ -70,10 +151,11 @@ class Edge {
     
     /*
      * Abstraction function: 
-     * 	- source = vertex the edge is coming from
-     *  - target = vertex the edge is going to
-     *  - weight = weight of the edge
-     * 
+     *  - AF(r) = an edge, e, such that 
+     *  	e.source = r.edge_source
+     *  	e.target = r.edge_target
+     *  	e.weight = r.edge_weight
+     *   
      * Representation invariant:
      *  - weight > 0
      *  - source != target

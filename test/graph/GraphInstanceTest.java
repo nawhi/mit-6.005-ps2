@@ -247,7 +247,6 @@ public abstract class GraphInstanceTest {
     	assertTrue("expected edges from B, C, D to A",
     			g.sources("A").keySet()
     				.containsAll(Arrays.asList("B", "C", "D")));
-    	
     	g.remove("A");
     	
     	assertTrue("expected no edges in graph", 

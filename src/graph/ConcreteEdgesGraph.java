@@ -115,15 +115,19 @@ public class ConcreteEdgesGraph implements Graph<String> {
     
     @Override public Map<String, Integer> sources(String target) {
         Map<String, Integer> sources = new HashMap<>();
-        edges.forEach(e -> sources.put(
-        		new String(e.getSource()), e.getWeight()));
+        edges.forEach(e -> {
+        	if (e.getTarget().equals(target)) 
+        		sources.put(new String(e.getSource()), e.getWeight());
+        });
         return sources;
     }
     
     @Override public Map<String, Integer> targets(String source) {
         Map<String, Integer> targets = new HashMap<>();
-        edges.forEach(e -> targets.put(
-        		new String(e.getTarget()), e.getWeight()));
+        edges.forEach(e -> {
+        	if (e.getSource().equals(source))
+        		targets.put(new String(e.getTarget()), e.getWeight());
+        });
         return targets;
     }
     

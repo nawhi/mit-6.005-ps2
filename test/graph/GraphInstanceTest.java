@@ -142,8 +142,6 @@ public abstract class GraphInstanceTest {
     	assertEquals("expected return of previous edge weight",
     			1, g.set("A", "B", 2));
     	
-    	
-    	
     	// Expect edge value 2 from A to B
     	assertTrue("expected edge from A to B", 
     			g.targets("A").keySet().contains("B"));

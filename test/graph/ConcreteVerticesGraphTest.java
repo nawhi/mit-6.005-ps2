@@ -56,7 +56,8 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Vertex a = new Vertex("A");
     	Vertex b = new Vertex("B");
     	
-    	a.setEdgeTo(b, 1);
+    	assertEquals("expected 0 return for new edge", 
+    			0, a.setEdgeTo(b, 1));
     	Map<Vertex, Integer> targets = a.getOutwardEdges();
     	
     	assertTrue("expected A to have B as a target",
@@ -72,8 +73,10 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Vertex a = new Vertex("A");
     	Vertex b = new Vertex("B");
     	
-    	a.setEdgeTo(b, 1);
-    	a.setEdgeTo(b, 0);
+    	assertEquals("expected 0 return for new edge",
+    			0, a.setEdgeTo(b, 1));
+    	assertEquals("expected return of previous edge weight", 
+    			1, a.setEdgeTo(b, 0));
     	
     	assertTrue("expected no targets at A",
     			a.getOutwardEdges().isEmpty());
@@ -84,7 +87,8 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Vertex a = new Vertex("A");
     	Vertex b = new Vertex("B");
     	
-    	a.setEdgeTo(b,  0);
+    	assertEquals("expected 0 return for new edge", 
+    			0, a.setEdgeTo(b, 0));
     	
     	assertTrue("expected no targets at A",
     			a.getOutwardEdges().isEmpty());
@@ -95,8 +99,10 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Vertex a = new Vertex("A");
     	Vertex b = new Vertex("B");
     	
-    	a.setEdgeTo(b, 1);
-    	a.setEdgeTo(b, 2);
+    	assertEquals("expected 0 return for new edge",
+    			0, a.setEdgeTo(b, 1));
+    	assertEquals("expected return of previous edge",
+    			1, a.setEdgeTo(b, 2));
     	
     	Map<Vertex, Integer> outwardEdges = a.getOutwardEdges();
     	

@@ -5,6 +5,7 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,24 +34,60 @@ public class ConcreteVerticesGraph implements Graph<String> {
     // must be another vertex which has V listed in its
     // sources with the same weight.
     
+    private Vertex getVertexByName(String name) {
+    	for (Vertex v: vertices) {
+    		if (v.getName().equals(name))
+    			return v;
+    	}
+    	return null;
+    }
+    
+    private Vertex createVertex(String name) {
+    	Vertex v = new Vertex(name);
+    	vertices.add(v);
+    	return v;
+    }
+    
     @Override public boolean add(String vertex) {
-        throw new RuntimeException("not implemented");
+        if (getVertexByName(vertex) != null)
+        	return false;
+    	vertices.add(new Vertex(vertex));
+    	return true;
     }
     
     @Override public int set(String source, String target, int weight) {
-        throw new RuntimeException("not implemented");
+        Vertex s = getVertexByName(source);
+        if (s == null)
+        	s = createVertex(source);
+        
+        Vertex t = getVertexByName(target);
+        if (t == null) 
+        	t = createVertex(target);
+        
+        return s.setEdgeTo(t, weight);
     }
     
     @Override public boolean remove(String vertex) {
-        throw new RuntimeException("not implemented");
+        Vertex v = getVertexByName(vertex);
+        if (v == null)
+        	return false;
+        vertices.remove(v);
+        return true;
     }
     
     @Override public Set<String> vertices() {
-        throw new RuntimeException("not implemented");
+        Set<String> s = new HashSet<>();
+    	for (Vertex v: vertices) {
+    		s.add(v.getName());
+    	}
+    	return s;
     }
     
     @Override public Map<String, Integer> sources(String target) {
-        throw new RuntimeException("not implemented");
+        Map<String, Integer> sources = new HashMap<>();
+    	for (Vertex v: vertices) {
+        	// 
+        }
     }
     
     @Override public Map<String, Integer> targets(String source) {
@@ -136,6 +173,10 @@ class Vertex {
 	
 	public Map<Vertex, Integer> getOutwardEdges() {
         return new HashMap<Vertex, Integer>(edges);
+	}
+	
+	public boolean hasOutwardEdges() {
+		return edges.size() != 0;
 	}
     
     // TODO toString()

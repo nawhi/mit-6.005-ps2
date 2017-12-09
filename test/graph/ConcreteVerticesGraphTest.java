@@ -103,7 +103,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	assertTrue("expected A to have B as a target",
     			outwardEdges.containsKey(b));
     	assertTrue("expected A to have an edge to B of weight 1",
-    			outwardEdges.containsValue(1));
+    			outwardEdges.containsValue(2));
     	assertEquals("expected only one entry in a.targets",
     			1, outwardEdges.size());
     }

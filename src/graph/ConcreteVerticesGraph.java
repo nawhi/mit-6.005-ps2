@@ -4,6 +4,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,23 +74,34 @@ public class ConcreteVerticesGraph implements Graph<String> {
  */
 class Vertex {
     
-    // TODO fields
-	private Map<Vertex, Integer> targets;
-	private String name;
+    
+	// Refers to edges leading away from is vertex ONLY.
+	private Map<Vertex, Integer> edges;
+	
+	// The name of the vertex (can't be changed once assigned) 
+	private final String name;
     
     // Abstraction function:
     //   TODO
     // Representation invariant:
-    //   TODO
+	//	 No edge shold ever point to a null Vertex
     // Safety from rep exposure:
-    //   TODO
+    //   Return a copy of everything
     
     // TODO constructor
 	public Vertex(String name) {
 		this.name = name;
+		this.edges = new HashMap<Vertex, Integer>();
 	}
     
     // TODO checkRep
+	private boolean checkRep() {
+		for (Vertex v: edges.keySet()) {
+			if (v.equals(null))
+				return false;
+		}
+		return true;
+	}
 	
 	
 	public String getName() {
@@ -109,13 +121,24 @@ class Vertex {
      * 			no such edge
      */
 	public int setEdgeTo(Vertex target, int weight) {
-        throw new RuntimeException("not implemented");
+		if (edges.containsKey(target)) {
+			if (weight == 0)
+				return edges.remove(target);
+			else
+				return edges.put(target, weight);
+		}
+		// new target
+		if (weight != 0) {
+			edges.put(target, weight);
+		}
+		return 0;
 	}
 	
 	public Map<Vertex, Integer> getOutwardEdges() {
-        throw new RuntimeException("not implemented");
+        return new HashMap<Vertex, Integer>(edges);
 	}
     
     // TODO toString()
     
 }
+ 

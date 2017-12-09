@@ -27,6 +27,10 @@ public class ConcreteVerticesGraph implements Graph<String> {
     // TODO constructor
     
     // TODO checkRep
+    // This needs to check for dangling edges.
+    // i.e. that for some vertex V, every t in V.targets
+    // must be another vertex which has V listed in its
+    // sources with the same weight.
     
     @Override public boolean add(String vertex) {
         throw new RuntimeException("not implemented");
@@ -53,6 +57,9 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     // TODO toString()
+    @Override public String toString() {
+    	throw new RuntimeException("not implemented");
+    }
     
 }
 
@@ -67,6 +74,8 @@ public class ConcreteVerticesGraph implements Graph<String> {
 class Vertex {
     
     // TODO fields
+	private Map<Vertex, Integer> targets;
+	private String name;
     
     // Abstraction function:
     //   TODO
@@ -76,10 +85,36 @@ class Vertex {
     //   TODO
     
     // TODO constructor
+	public Vertex(String name) {
+		this.name = name;
+	}
     
     // TODO checkRep
+	
+	
+	public String getName() {
+		return new String(name);
+	}
     
-    // TODO methods
+    /**
+     * Add, change or remove a weighted directed edge
+     * from this vertex to another. 
+     * If weight is nonzero, add an edge or update the
+     * weight of that edge.
+     * If weight is zero, remove the edge if it exists.
+     * 
+     * @param target  The Vertex to set the edge to.
+     * @param weight  nonnegative weight of the edge
+     * @return the previous weight of the edge, or 0 if there was
+     * 			no such edge
+     */
+	public int setEdgeTo(Vertex target, int weight) {
+        throw new RuntimeException("not implemented");
+	}
+	
+	public Map<Vertex, Integer> getOutwardEdges() {
+        throw new RuntimeException("not implemented");
+	}
     
     // TODO toString()
     

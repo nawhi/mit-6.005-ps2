@@ -84,10 +84,7 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     @Override public Map<String, Integer> sources(String target) {
-        Map<String, Integer> sources = new HashMap<>();
-    	for (Vertex v: vertices) {
-        	// 
-        }
+    	throw new RuntimeException("not implemented");
     }
     
     @Override public Map<String, Integer> targets(String source) {
@@ -179,7 +176,16 @@ class Vertex {
 		return edges.size() != 0;
 	}
     
-    // TODO toString()
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(String.format("%s@{%s",
+    		getClass().getName(), name));
+    	for (Map.Entry<Vertex, Integer> e: edges.entrySet())
+    		sb.append(String.format(", %d->%s",
+    				e.getValue(), e.getKey().getName()));
+    	sb.append("}");
+    	return sb.toString();
+    }
     
 }
  

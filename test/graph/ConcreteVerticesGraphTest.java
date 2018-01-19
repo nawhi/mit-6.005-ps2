@@ -120,7 +120,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     public void testVertextoStringNoEdges() {
     	Vertex v = new Vertex("A");
     	assertEquals("Expected vertex with 0 edges to print name only",
-    			"graph.Vertex@{'A'}", v.toString());
+    			"graph.Vertex@{A}", v.toString());
     }
     
     @Test
@@ -129,7 +129,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Vertex v2 = new Vertex("B");
     	v.setEdgeTo(v2, 1);
     	assertEquals("Expected vertex with 1 edge to print weight & target name",
-    			"graph.Vertex@{'A', 1->'B'}", v.toString()); 
+    			"graph.Vertex@{A, 1->B}", v.toString()); 
     }
     
     @Test
@@ -140,8 +140,11 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	
     	v.setEdgeTo(v2, 2);
     	v.setEdgeTo(v3, 2);
-    	assertEquals("Expected vertex with 2 edges to print both of them",
-    			"graph.Vertex@{'A', 2->'B', 2->'C'}", v.toString());
+    	
+    	// May print in random order
+    	assertTrue("Expected vertex with 2 edges to print both of them",
+    			v.toString().equals("graph.Vertex@{A, 2->B, 2->C}") 
+    			|| v.toString().equals("graph.Vertex@{A, 2->C, 2->B}"));
     }
     
 }

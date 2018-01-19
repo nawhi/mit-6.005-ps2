@@ -27,13 +27,46 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     }
     
     /*
-     * Testing ConcreteVerticesGraph...
+     * Testing ConcreteVerticesGraph.toString()...
+     * 
+     * Partitions:
+     * Empty graph
+     * 1 vertex				"Graph.ConcreteVerticesGraph@{}"
+     * 2 vertices, 1 edge
      */
+    @Test
+    public void testGraphToStringEmpty() {
+    	Graph<String> g = emptyInstance();
+    	assertEquals("Expected empty graph to print empty {}",
+    			"Graph.ConcreteVerticesGraph@{}", g.toString());
+    }
     
-    // Testing strategy for ConcreteVerticesGraph.toString()
-    //   TODO
+    @Test
+    public void testGraphToStringOneVertex() {
+    	Graph<String> g = emptyInstance();
+    	g.add("A");
+    	assertEquals("Expected 1 vertex in string",
+    			"Graph.ConcreteVerticesGraph@{Graph.Vertex@{A}}",
+    			g.toString());
+    }
     
-    // TODO tests for ConcreteVerticesGraph.toString()
+    @Test
+    public void testGraphToStringTwoVerticesOneEdge() {
+    	Graph<String> g = emptyInstance();
+    	g.add("A");
+    	g.add("B");
+    	g.set("A", "B", 1);
+    	String fullStr = g.toString();
+    	assertTrue("Expected correct name", 
+    			fullStr.contains("Graph.ConcreteVerticesGraph@{"));
+    	assertEquals("Expected final }", '}', fullStr.charAt(fullStr.length()-1));
+    	assertTrue("Expected vertex A with edge",
+    			fullStr.contains("Graph.Vertex@{A, 1->B}"));
+    	assertTrue("Expected vertex B with no edge",
+    			fullStr.contains("Graph.Vertex@{B}"));
+    }
+    
+    
     
     /*
      * Testing Vertex...

@@ -23,7 +23,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
      * Provide a ConcreteVerticesGraph for tests in GraphInstanceTest.
      */
     @Override public Graph<String> emptyInstance() {
-        return new ConcreteVerticesGraph();
+        return new ConcreteVerticesGraph<String>();
     }
     
     /*
@@ -81,12 +81,12 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
      */
     @Test
     public void testSetEdgeToNewEdge() {
-    	Vertex a = new Vertex("A");
-    	Vertex b = new Vertex("B");
+    	Vertex<String> a = new Vertex<>("A");
+    	Vertex<String> b = new Vertex<>("B");
     	
     	assertEquals("expected 0 return for new edge", 
     			0, a.setEdgeTo(b, 1));
-    	Map<Vertex, Integer> targets = a.getOutwardEdges();
+    	Map<Vertex<String>, Integer> targets = a.getOutwardEdges();
     	
     	assertTrue("expected A to have B as a target",
     			targets.containsKey(b));
@@ -98,8 +98,8 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testSetExistingEdgeToZero() {
-    	Vertex a = new Vertex("A");
-    	Vertex b = new Vertex("B");
+    	Vertex<String> a = new Vertex<>("A");
+    	Vertex<String> b = new Vertex<>("B");
     	
     	assertEquals("expected 0 return for new edge",
     			0, a.setEdgeTo(b, 1));
@@ -112,8 +112,8 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testSetNonexistentEdgeToZero() {
-    	Vertex a = new Vertex("A");
-    	Vertex b = new Vertex("B");
+    	Vertex<String> a = new Vertex<>("A");
+    	Vertex<String> b = new Vertex<>("B");
     	
     	assertEquals("expected 0 return for new edge", 
     			0, a.setEdgeTo(b, 0));
@@ -124,15 +124,15 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testSetExistingEdgeToNewValue() {
-    	Vertex a = new Vertex("A");
-    	Vertex b = new Vertex("B");
+    	Vertex<String> a = new Vertex<>("A");
+    	Vertex<String> b = new Vertex<>("B");
     	
     	assertEquals("expected 0 return for new edge",
     			0, a.setEdgeTo(b, 1));
     	assertEquals("expected return of previous edge",
     			1, a.setEdgeTo(b, 2));
     	
-    	Map<Vertex, Integer> outwardEdges = a.getOutwardEdges();
+    	Map<Vertex<String>, Integer> outwardEdges = a.getOutwardEdges();
     	
     	assertTrue("expected A to have B as a target",
     			outwardEdges.containsKey(b));
@@ -151,15 +151,15 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
      */
     @Test
     public void testVertextoStringNoEdges() {
-    	Vertex v = new Vertex("A");
+    	Vertex<String> v = new Vertex<>("A");
     	assertEquals("Expected vertex with 0 edges to print name only",
     			"graph.Vertex@{A}", v.toString());
     }
     
     @Test
     public void testVertextoStringOneEdge() {
-    	Vertex v = new Vertex("A");
-    	Vertex v2 = new Vertex("B");
+    	Vertex<String> v = new Vertex<>("A");
+    	Vertex<String> v2 = new Vertex<>("B");
     	v.setEdgeTo(v2, 1);
     	assertEquals("Expected vertex with 1 edge to print weight & target name",
     			"graph.Vertex@{A, 1->B}", v.toString()); 
@@ -167,9 +167,9 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testVertextoStringTwoEdges() {
-    	Vertex v = new Vertex("A");
-    	Vertex v2 = new Vertex("B");
-    	Vertex v3 = new Vertex("C");
+    	Vertex<String> v = new Vertex<>("A");
+    	Vertex<String> v2 = new Vertex<>("B");
+    	Vertex<String> v3 = new Vertex<>("C");
     	
     	v.setEdgeTo(v2, 2);
     	v.setEdgeTo(v3, 2);

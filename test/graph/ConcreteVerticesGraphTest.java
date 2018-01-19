@@ -38,7 +38,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     public void testGraphToStringEmpty() {
     	Graph<String> g = emptyInstance();
     	assertEquals("Expected empty graph to print empty {}",
-    			"Graph.ConcreteVerticesGraph@{}", g.toString());
+    			"graph.ConcreteVerticesGraph@{}", g.toString());
     }
     
     @Test
@@ -46,7 +46,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	Graph<String> g = emptyInstance();
     	g.add("A");
     	assertEquals("Expected 1 vertex in string",
-    			"Graph.ConcreteVerticesGraph@{Graph.Vertex@{A}}",
+    			"graph.ConcreteVerticesGraph@{graph.Vertex@{A}, }",
     			g.toString());
     }
     
@@ -58,12 +58,12 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     	g.set("A", "B", 1);
     	String fullStr = g.toString();
     	assertTrue("Expected correct name", 
-    			fullStr.contains("Graph.ConcreteVerticesGraph@{"));
+    			fullStr.contains("graph.ConcreteVerticesGraph@{"));
     	assertEquals("Expected final }", '}', fullStr.charAt(fullStr.length()-1));
     	assertTrue("Expected vertex A with edge",
-    			fullStr.contains("Graph.Vertex@{A, 1->B}"));
+    			fullStr.contains("graph.Vertex@{A, 1->B}"));
     	assertTrue("Expected vertex B with no edge",
-    			fullStr.contains("Graph.Vertex@{B}"));
+    			fullStr.contains("graph.Vertex@{B}"));
     }
     
     

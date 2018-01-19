@@ -72,6 +72,11 @@ public class ConcreteVerticesGraph implements Graph<String> {
         if (v == null)
         	return false;
         vertices.remove(v);
+        
+        // Get rid of any edges pointing to v
+        for (Vertex source: vertices)
+        	source.setEdgeTo(v, 0);
+        
         return true;
     }
     
@@ -103,7 +108,11 @@ public class ConcreteVerticesGraph implements Graph<String> {
     
     // TODO toString()
     @Override public String toString() {
-    	throw new RuntimeException("not implemented");
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(String.format("%s@{", getClass().getName()));
+    	for (Vertex v: vertices)
+    		sb.append(v.toString()).append(", ");
+    	return sb.append("}").toString();
     }
     
 }

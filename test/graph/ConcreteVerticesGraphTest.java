@@ -39,11 +39,6 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
      * Testing Vertex...
      */
     
-    // Testing strategy for Vertex
-    //   TODO
-    
-    // TODO tests for operations of Vertex
-    
     /*
      * setEdgeTo:
      * - set a new edge with a value
@@ -112,6 +107,41 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     			outwardEdges.containsValue(2));
     	assertEquals("expected only one entry in a.targets",
     			1, outwardEdges.size());
+    }
+    
+    /*
+     * Tests for Vertex.toString()
+     * partitions:
+     * name, 0 edges  "graph.Vertex@{'$name'}"
+     * name, 1 edge   "graph.Vertex@{'$name', $w->'$v2.name'}"
+     * name, 2+ edges "graph.Vertex@{'<name>', e->'<name2>', e->'<name3>'}"
+     */
+    @Test
+    public void testVertextoStringNoEdges() {
+    	Vertex v = new Vertex("A");
+    	assertEquals("Expected vertex with 0 edges to print name only",
+    			"graph.Vertex@{'A'}", v.toString());
+    }
+    
+    @Test
+    public void testVertextoStringOneEdge() {
+    	Vertex v = new Vertex("A");
+    	Vertex v2 = new Vertex("B");
+    	v.setEdgeTo(v2, 1);
+    	assertEquals("Expected vertex with 1 edge to print weight & target name",
+    			"graph.Vertex@{'A', 1->'B'}", v.toString()); 
+    }
+    
+    @Test
+    public void testVertextoStringTwoEdges() {
+    	Vertex v = new Vertex("A");
+    	Vertex v2 = new Vertex("B");
+    	Vertex v3 = new Vertex("C");
+    	
+    	v.setEdgeTo(v2, 2);
+    	v.setEdgeTo(v3, 2);
+    	assertEquals("Expected vertex with 2 edges to print both of them",
+    			"graph.Vertex@{'A', 2->'B', 2->'C'}", v.toString());
     }
     
 }

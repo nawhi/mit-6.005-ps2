@@ -84,11 +84,21 @@ public class ConcreteVerticesGraph implements Graph<String> {
     }
     
     @Override public Map<String, Integer> sources(String target) {
-    	throw new RuntimeException("not implemented");
+    	Map<String, Integer> sources = new HashMap<>();
+    	for (Vertex v: vertices) {
+    		int edgeValue = v.getEdgeTo(getVertexByName(target));
+    		if (edgeValue != 0)
+    			sources.put(v.getName(), edgeValue);
+    	}
+    	return sources;
     }
     
     @Override public Map<String, Integer> targets(String source) {
-        throw new RuntimeException("not implemented");
+        Map<String, Integer> targets = new HashMap<>();
+        Vertex v = getVertexByName(source);
+        for (Map.Entry<Vertex, Integer> e: v.getOutwardEdges().entrySet())
+        	targets.put(e.getKey().getName(), e.getValue());
+        return targets;
     }
     
     // TODO toString()
@@ -168,12 +178,29 @@ class Vertex {
 		return 0;
 	}
 	
+	/**
+	 * Get the value of the edge to a particular other vertex,
+	 * if it exists.
+	 * 
+	 * @param target The vertex to get the edge to
+	 * @return the value of the edge, or zero if there is no edge.
+	 */
+	public int getEdgeTo(Vertex target) {
+		if (hasEdgeTo(target))
+			return edges.get(target);
+		return 0;
+	}
+	
 	public Map<Vertex, Integer> getOutwardEdges() {
         return new HashMap<Vertex, Integer>(edges);
 	}
 	
 	public boolean hasOutwardEdges() {
 		return edges.size() != 0;
+	}
+	
+	public boolean hasEdgeTo(Vertex target) {
+		return edges.containsKey(target);
 	}
     
     public String toString() {

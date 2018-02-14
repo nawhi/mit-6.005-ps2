@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -118,7 +119,8 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        List<String> words = Arrays.asList(input.split("\\s+"));
+        List<String> words = new ArrayList<>(Arrays.asList(input.split("\\s+")));
+        
         /*
          * Doesn't yet handle choosing the weightiest path
          * if there is more than one available... this is TODO

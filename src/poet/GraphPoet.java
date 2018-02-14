@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import graph.Graph;
 
@@ -125,12 +126,15 @@ public class GraphPoet {
         for (int i=words.size()-2; i>=0; i--) {
         	String thisWord = words.get(i);
         	String nextWord = words.get(i+1);
-        	for (String bridge: graph.targets(thisWord).keySet()) {
-        		for (String target: graph.targets(bridge).keySet()) {
-        			if (target.equals(nextWord)) {
-        				words.add(i+1, bridge);
-        			}
-        		}
+        	Set<String> vertices = graph.vertices();
+        	if (vertices.contains(thisWord) && vertices.contains(nextWord)) {
+	        	for (String bridge: graph.targets(thisWord).keySet()) {
+	        		for (String target: graph.targets(bridge).keySet()) {
+	        			if (target.equals(nextWord)) {
+	        				words.add(i+1, bridge);
+	        			}
+	        		}
+	        	}
         	}
         }
         System.out.println(words);

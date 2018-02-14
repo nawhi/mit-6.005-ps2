@@ -126,24 +126,42 @@ public class GraphPoet {
          * if there is more than one available... this is TODO
          */
         for (int i=words.size()-2; i>=0; i--) {
-        	String thisWord = words.get(i);
-        	String nextWord = words.get(i+1);
-        	Set<String> vertices = graph.vertices();
-        	if (vertices.contains(thisWord) && vertices.contains(nextWord)) {
-	        	for (String bridge: graph.targets(thisWord).keySet()) {
-	        		for (String target: graph.targets(bridge).keySet()) {
-	        			if (target.equals(nextWord)) {
-	        				words.add(i+1, bridge);
-	        			}
-	        		}
-	        	}
-        	}
+        	String bridge = findBridge(words.get(i), words.get(i+1));
+        	if (bridge != null)
+        		words.add(i+1, bridge);
         }
         System.out.println(words);
         StringBuilder sb = new StringBuilder();
         for (String w: words) 
         	sb.append(w + " ");
         return sb.toString().trim();
+    }
+    
+    /**
+     * Search the graph for a bridge word to insert between words
+     * a and b.
+     * @param a The source word
+     * @param b The word that will go 
+     * @return a bridge word X such that the edges a > X > b exist,
+     * 		   or null if there is no such bridge word.
+     *         If more than one candidate bridge exists, the one returned 
+     *         will be the one with the highest total edge weight from
+     *         a and to b. In other words, a 1> X 2> b would win over
+     *         a 1> Y 1> b (since 1 + 2 is greater than 1 + 1).  
+     *          
+     */
+    private String findBridge(String a, String b) {
+    	Set<String> vertices = graph.vertices();
+    	if (vertices.contains(a) && vertices.contains(b)) {
+        	for (String bridge: graph.targets(a).keySet()) {
+        		for (String target: graph.targets(bridge).keySet()) {
+        			if (target.equals(b)) {
+        				return bridge;
+        			}
+        		}
+        	}
+    	}
+    	return null;
     }
     
     // TODO toString()

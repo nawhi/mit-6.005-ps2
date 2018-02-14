@@ -152,37 +152,27 @@ public class GraphPoet {
      *          
      */
     private String findBridge(String a, String b) {
-    	Set<String> vertices = graph.vertices();
+    	if (!graph.vertices().containsAll(Arrays.asList(a, b)))
+    		return null;
     	
     	String result = null;
     	int resultWeight = 0;
     	
-    	if (vertices.contains(a) && vertices.contains(b)) {
+    	for (String bridge: graph.targets(a).keySet()) {
     		
-        	for (Map.Entry<String, Integer> bridgeEntry: graph.targets(a).entrySet()) {
-        		String bridge = bridgeEntry.getKey();
-        		for (Map.Entry<String, Integer> targetEntry: 
-        			graph.targets(bridge).entrySet()) {
-        			String target = targetEntry.getKey();
-        			if (target.equals(b)) {
-        				/*
-        				 * We found a qualifying bridge. Let's see
-        				 * if it's better than what we've already
-        				 * got
-        				 */
-        				int bridgeWeight = bridgeEntry.getValue();
-        				int targetWeight = targetEntry.getValue();
-        				int totalWeight = bridgeWeight + targetWeight;
-        				if (result == null || totalWeight > resultWeight) {
-        					result = bridge;
-        					resultWeight = totalWeight;
-        				}
-        			}
-        		}
-        	}
+    		for (String target: graph.targets(bridge).keySet()) {
+    			
+    			if (target.equals(b)) {
+    				int totalWeight = graph.targets(a).get(bridge)
+    						+ graph.targets(bridge).get(target);
+    				
+    				if (result == null || totalWeight > resultWeight) {
+    					result = bridge; 
+    					resultWeight = totalWeight;
+    				}
+    			}
+    		}
     	}
-    	if (result == null)
-    		return null;
     	return result;
     }
     

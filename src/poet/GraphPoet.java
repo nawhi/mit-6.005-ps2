@@ -103,9 +103,11 @@ public class GraphPoet {
     	for (int i=0; i<wordList.size()-2; i++) {
     		String thisWord = wordList.get(i);
     		String nextWord = wordList.get(i+1);
-    		graph.add(thisWord);
-    		graph.add(nextWord);
-    		graph.set(thisWord, nextWord);
+    		if (!thisWord.equals(nextWord)) {
+    			graph.add(thisWord);
+    			graph.add(nextWord);
+    			graph.set(thisWord, nextWord);
+    		}
     	}
     }
     

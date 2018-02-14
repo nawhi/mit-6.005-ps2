@@ -101,7 +101,11 @@ public class GraphPoet {
      */
     private void generateGraph(List<String> wordList) {
     	for (int i=0; i<wordList.size()-2; i++) {
-    		graph.set(wordList.get(i), wordList.get(i+1));
+    		String thisWord = wordList.get(i);
+    		String nextWord = wordList.get(i+1);
+    		graph.add(thisWord);
+    		graph.add(nextWord);
+    		graph.set(thisWord, nextWord);
     	}
     }
     
@@ -112,7 +116,26 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        throw new RuntimeException("not implemented");
+        List<String> words = Arrays.asList(input.split("\\s+"));
+        /*
+         * Doesn't yet handle choosing the weightiest path
+         * if there is more than one available... this is TODO
+         */
+        for (int i=words.size()-2; i<=0; i--) {
+        	String thisWord = words.get(i);
+        	String nextWord = words.get(i+1);
+        	for (String bridge: graph.targets(thisWord).keySet()) {
+        		for (String target: graph.targets(bridge).keySet()) {
+        			if (target.equals(nextWord)) {
+        				words.add(i+1, bridge);
+        			}
+        		}
+        	}
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String w: words) 
+        	sb.append(w).append(" ");
+        return sb.toString().trim();
     }
     
     // TODO toString()

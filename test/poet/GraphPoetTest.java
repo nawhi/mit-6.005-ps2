@@ -58,7 +58,7 @@ public class GraphPoetTest {
     			pangram, gp.poem(pangram));
     	
     	// Input no edges
-    	GraphPoet gp2 = new GraphPoet(new File("test/poet/case_insensitivity.txt"));
+    	GraphPoet gp2 = new GraphPoet(new File("test/poet/case_sensitivity.txt"));
     	assertEquals("Corpus with only case variations of 1 word should leave input unchanged",
     			pangram, gp2.poem(pangram));
     	
@@ -74,6 +74,7 @@ public class GraphPoetTest {
      * checks extra word is correctly inserted according to the affinity graph
      * when there is exactly one candidate 
      */
+    @Test
     public void testGraphPoetOnePathPerEdge() throws Exception {
     	GraphPoet gp = new GraphPoet(new File("test/poet/one_path.txt"));
     	String expected = "The quick slow brown fox jumped over the lazy dog";

@@ -95,7 +95,7 @@ public class GraphPoetTest {
     @Test
     public void testGraphPoetMultiplePaths() throws Exception {
     	GraphPoet gp = new GraphPoet(new File("test/poet/multiple_paths.txt"));
-    	String expected = "The quick esoteric fox jumped over the lazy dog";
+    	String expected = "The quick esoteric brown fox jumped over the lazy dog";
     	assertEquals("Should insert word with highest weighting",
     			expected.toLowerCase(), gp.poem(pangram).toLowerCase());
     }

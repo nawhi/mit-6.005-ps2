@@ -92,6 +92,7 @@ public class GraphPoetTest {
      * on the affinity graph with the heaviest weighting, when there is
      * more than one option 
      */
+    @Test
     public void testGraphPoetMultiplePaths() throws Exception {
     	GraphPoet gp = new GraphPoet(new File("test/poet/multiple_paths.txt"));
     	String expected = "The quick esoteric fox jumped over the lazy dog";

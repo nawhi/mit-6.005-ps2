@@ -123,7 +123,7 @@ public class GraphPoet {
          * Doesn't yet handle choosing the weightiest path
          * if there is more than one available... this is TODO
          */
-        for (int i=words.size()-2; i<=0; i--) {
+        for (int i=words.size()-2; i>=0; i--) {
         	String thisWord = words.get(i);
         	String nextWord = words.get(i+1);
         	for (String bridge: graph.targets(thisWord).keySet()) {

@@ -23,6 +23,11 @@ public class Main {
         final GraphPoet nimoy = new GraphPoet(new File("src/poet/mugar-omni-theater.txt"));
         final String input = "Test the system.";
         System.out.println(input + "\n>>>\n" + nimoy.poem(input));
+        
+        final GraphPoet shakespeare = new GraphPoet(new File("src/poet/shakespeare.txt"));
+        final String input2 = "I would like to show you something I found earlier" +
+        		"- I really like it and I love to be lost";
+        System.out.println(input + "\n>>\n" + shakespeare.poem(input2));
     }
     
 }

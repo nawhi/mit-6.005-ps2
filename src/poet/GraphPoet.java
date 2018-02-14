@@ -3,8 +3,13 @@
  */
 package poet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import graph.Graph;
 
@@ -68,10 +73,37 @@ public class GraphPoet {
      * @throws IOException if the corpus file cannot be found or read
      */
     public GraphPoet(File corpus) throws IOException {
-        throw new RuntimeException("not implemented");
+    	String contents = getContents(corpus);
+    	generateGraph(Arrays.asList(contents.toLowerCase().split("\\s+")));
+    	
     }
     
-    // TODO checkRep
+    /**
+     * Read the contents of a given text file into a string.
+     * @param f The file to open and read.
+     * @return The string contents of the file.
+     */
+    private String getContents(File f) throws IOException {
+    	BufferedReader reader = new BufferedReader(new FileReader(f));
+    	StringBuilder sb = new StringBuilder();
+    	String line;
+    	while ((line = reader.readLine()) != null)
+    		sb.append(line);
+    	reader.close();
+    	return sb.toString();
+    }
+    
+    /**
+     * Generate the word affinity graph for the supplied list of words and
+     * assign it to the internal member graph.
+     * @param wordList a list of lower-case words (including punctuation)
+     * 			from which to form the graph
+     */
+    private void generateGraph(List<String> wordList) {
+    	for (int i=0; i<wordList.size()-2; i++) {
+    		graph.set(wordList.get(i), wordList.get(i+1));
+    	}
+    }
     
     /**
      * Generate a poem.

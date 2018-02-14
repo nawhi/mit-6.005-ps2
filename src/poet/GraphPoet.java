@@ -100,7 +100,7 @@ public class GraphPoet {
      * 			from which to form the graph
      */
     private void generateGraph(List<String> wordList) {
-    	for (int i=0; i<wordList.size()-2; i++) {
+    	for (int i=0; i<wordList.size()-1; i++) {
     		String thisWord = wordList.get(i);
     		String nextWord = wordList.get(i+1);
     		if (!thisWord.equals(nextWord)) {

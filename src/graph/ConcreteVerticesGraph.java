@@ -39,6 +39,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     		if (v.getName().equals(name))
     			return v;
     	}
+    	
     	return null;
     }
     
@@ -99,6 +100,8 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     @Override public Map<L, Integer> sources(L target) {
     	Map<L, Integer> sources = new HashMap<>();
     	for (Vertex<L> v: vertices) {
+    		Vertex<L> t = getVertexByName(target);
+    		assert t != null;
     		int edgeValue = v.getEdgeTo(getVertexByName(target));
     		if (edgeValue != 0)
     			sources.put(v.getName(), edgeValue);
@@ -109,6 +112,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     @Override public Map<L, Integer> targets(L source) {
         Map<L, Integer> targets = new HashMap<>();
         Vertex<L> v = getVertexByName(source);
+        assert v != null;
         for (Map.Entry<Vertex<L>, Integer> e: v.getOutwardEdges().entrySet())
         	targets.put(e.getKey().getName(), e.getValue());
         return targets;

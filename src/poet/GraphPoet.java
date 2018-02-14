@@ -88,7 +88,7 @@ public class GraphPoet {
     	StringBuilder sb = new StringBuilder();
     	String line;
     	while ((line = reader.readLine()) != null)
-    		sb.append(line);
+    		sb.append(line + " ");
     	reader.close();
     	return sb.toString();
     }
@@ -134,9 +134,10 @@ public class GraphPoet {
         		}
         	}
         }
+        System.out.println(words);
         StringBuilder sb = new StringBuilder();
         for (String w: words) 
-        	sb.append(w).append(" ");
+        	sb.append(w + " ");
         return sb.toString().trim();
     }
     

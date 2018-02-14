@@ -95,6 +95,15 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     	return 0;
     }
     
+    @Override public void set(L source, L target) {
+    	int edgeIx = findEdge(source, target);
+    	if (edgeIx == -1)
+    		set(source, target, 1);
+    	else
+    		set(source, target, edges.get(edgeIx).getWeight() + 1);
+    	
+    }
+    
     @Override public boolean remove(L vertex) {
     	if (!vertices.contains(vertex))
     		return false;

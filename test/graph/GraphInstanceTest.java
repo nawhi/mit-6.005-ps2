@@ -155,6 +155,39 @@ public abstract class GraphInstanceTest {
     	
     }
     
+    @Test
+    public void testIncrementNewEdge() {
+    	Graph<String> g = emptyInstance();
+    	g.add("A");
+    	g.add("B");
+    	g.set("A", "B");
+    	
+    	// Expect edge value 1 from A to B
+    	assertTrue("expected edge from A to B", 
+    			g.targets("A").keySet().contains("B"));
+    	assertTrue("expected exactly 1 edge from A", 
+    			g.targets("A").keySet().size() == 1);
+    	assertTrue("expected A>B edge of value 1",
+    			g.targets("A").get("B").equals(1));
+    }
+    
+    @Test
+    public void testIncrementExistingEdge() {
+    	Graph<String> g = emptyInstance();
+    	g.add("A");
+    	g.add("B");
+    	g.set("A", "B");
+    	g.set("A", "B");
+    	
+    	// Expect edge value 2 from A to B
+    	assertTrue("expected edge from A to B", 
+    			g.targets("A").keySet().contains("B"));
+    	assertTrue("expected exactly 1 edge from A", 
+    			g.targets("A").keySet().size() == 1);
+    	assertTrue("expected A>B edge of value 2",
+    			g.targets("A").get("B").equals(2));
+    }
+    
 
     
     @Test

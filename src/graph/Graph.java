@@ -49,10 +49,19 @@ public interface Graph<L> {
      * @param source label of the source vertex
      * @param target label of the target vertex
      * @param weight nonnegative weight of the edge
+     * 					
      * @return the previous weight of the edge, or zero if there was no such
      *         edge
      */
     public int set(L source, L target, int weight);
+    
+    /**
+     * Increment by one the weight of a directed edge in this graph. If
+     * there was no such edge, create an edge with a weight of one. 
+     * @param source label of the source vertex
+     * @param target label of the target vertex
+     */
+    public void set(L source, L target);
     
     /**
      * Remove a vertex from this graph; any edges to or from the vertex are

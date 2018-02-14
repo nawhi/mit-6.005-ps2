@@ -42,6 +42,12 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     	return null;
     }
     
+    private Vertex<L> ensureVertexByName(L name) {
+    	Vertex<L> v = getVertexByName(name);
+    	if (v == null) v = createVertex(name);
+    	return v;
+    }
+    
     private Vertex<L> createVertex(L name) {
     	Vertex<L> v = new Vertex<L>(name);
     	vertices.add(v);
@@ -56,15 +62,17 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public int set(L source, L target, int weight) {
-        Vertex<L> s = getVertexByName(source);
-        if (s == null)
-        	s = createVertex(source);
-        
-        Vertex<L> t = getVertexByName(target);
-        if (t == null) 
-        	t = createVertex(target);
+        Vertex<L> s = ensureVertexByName(source);
+        Vertex<L> t = ensureVertexByName(target);
         
         return s.setEdgeTo(t, weight);
+    }
+    
+    @Override public void set(L source, L target) {
+    	Vertex<L> s = ensureVertexByName(source);
+    	Vertex<L> t = ensureVertexByName(target);
+    	
+    	s.setEdgeTo(t, s.getEdgeTo(t) + 1);
     }
     
     @Override public boolean remove(L vertex) {

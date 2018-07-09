@@ -181,9 +181,8 @@ class Edge<L> {
      *  - source != target
      * 
      * Safety from rep exposure:
-     *  - none needed apparently, see 
-     *  	testEdgeImmutability(). I guess because
-     *  	String and int are themselves immutable
+     *  - immutable type
+     *  - uses immutable primitives (int, String)
      */
     
 	public Edge(L source, L target, int weight) throws IllegalArgumentException {

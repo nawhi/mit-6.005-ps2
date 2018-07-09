@@ -43,6 +43,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
      * @return the index of the edge, or -1 if not found
      */
     private int findEdge(L source, L target) {
+    	assert checkRep();
     	for (int i = 0; i < edges.size(); ++i) {
     		Edge<L> e = edges.get(i);
     		if (e.getSource().equals(source) && e.getTarget().equals(target))
@@ -69,6 +70,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public boolean add(L vertex) {
+    	assert checkRep();
     	if (vertices.contains(vertex))
     		return false;
         vertices.add(vertex);
@@ -76,6 +78,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public int set(L source, L target, int weight) {
+    	assert checkRep();
     	int edgeIx = findEdge(source, target);
     	if (edgeIx != -1) {
     		int oldWeight = edges.get(edgeIx).getWeight();
@@ -96,6 +99,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public void set(L source, L target) {
+    	assert checkRep();
     	int edgeIx = findEdge(source, target);
     	if (edgeIx == -1)
     		set(source, target, 1);
@@ -105,6 +109,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public boolean remove(L vertex) {
+    	assert checkRep();
     	if (!vertices.contains(vertex))
     		return false;
     	vertices.remove(vertex);
@@ -119,11 +124,13 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public Set<L> vertices() {
-        return new HashSet<L>(vertices);
+        assert checkRep();
+    	return new HashSet<>(vertices);
     }
     
     @Override public Map<L, Integer> sources(L target) {
-        Map<L, Integer> sources = new HashMap<>();
+        assert checkRep();
+    	Map<L, Integer> sources = new HashMap<>();
         edges.forEach(e -> {
         	if (e.getTarget().equals(target)) 
         		sources.put(e.getSource(), e.getWeight());
@@ -132,7 +139,8 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public Map<L, Integer> targets(L source) {
-        Map<L, Integer> targets = new HashMap<>();
+        assert checkRep();
+    	Map<L, Integer> targets = new HashMap<>();
         edges.forEach(e -> {
         	if (e.getSource().equals(source))
         		targets.put(e.getTarget(), e.getWeight());
@@ -141,6 +149,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public String toString() {
+    	assert checkRep();
     	StringBuilder sb = new StringBuilder("ConcreteEdgesGraph:");
     	sb.append("vertices={");
     	vertices.forEach((v) -> sb.append(v + ","));

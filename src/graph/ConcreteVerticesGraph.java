@@ -20,13 +20,16 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     private final List<Vertex<L>> vertices = new ArrayList<>();
     
     // Abstraction function:
-    //   TODO
+    //   AF(r) = an ordered pair (V, E)
+    //		where V = { all v in r.vertices }
+    //      and E = { (v, v') for all (v,v') pair in r.vertices where v.hasEdgeTo(v') }
+    //		and there exists a W such that W(v, v') = v.getEdgeTo(v') for all (v, v') in E.
     // Representation invariant:
     //   TODO
     // Safety from rep exposure:
     //   TODO
     
-    // TODO constructor
+    // Default constructor will be fine here
     
     // TODO checkRep
     // This needs to check for dangling edges.
@@ -118,7 +121,6 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         return targets;
     }
     
-    // TODO toString()
     @Override public String toString() {
     	StringBuilder sb = new StringBuilder();
     	sb.append(String.format("%s@{", getClass().getName()));

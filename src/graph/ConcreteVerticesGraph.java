@@ -25,19 +25,23 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     //      and E = { (v, v') for all (v,v') pair in r.vertices where v.hasEdgeTo(v') }
     //		and there exists a W such that W(v, v') = v.getEdgeTo(v') for all (v, v') in E.
     // Representation invariant:
-    //   TODO
+    //   - Any graph with v vertices will have at most v(v-1) edges
     // Safety from rep exposure:
-    //   TODO
+    //   - mutable Vertex class is never exposed in public methods
+    //   - non-primitive types aren't returned by reference where
+    //     callers could mutate the rep
     
     // Default constructor will be fine here
     
-    // TODO checkRep
-    // This needs to check for dangling edges.
-    // i.e. that for some vertex V, every t in V.targets
-    // must be another vertex which has V listed in its
-    // sources with the same weight.
+    private boolean checkRep() {
+    	int nEdges = 0;
+    	for(Vertex<L> v: vertices)
+    		nEdges += v.getOutwardEdges().size();
+    	return nEdges <= vertices.size() * (vertices.size() - 1);
+    }
     
     private Vertex<L> getVertexByName(L name) {
+    	assert checkRep();
     	for (Vertex<L> v: vertices) {
     		if (v.getName().equals(name))
     			return v;
@@ -47,6 +51,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     private Vertex<L> ensureVertexByName(L name) {
+    	assert checkRep();
     	Vertex<L> v = getVertexByName(name);
     	if (v == null) v = createVertex(name);
     	return v;
@@ -59,20 +64,23 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public boolean add(L vertex) {
-        if (getVertexByName(vertex) != null)
+    	assert checkRep();
+    	if (getVertexByName(vertex) != null)
         	return false;
     	vertices.add(new Vertex<L>(vertex));
     	return true;
     }
     
     @Override public int set(L source, L target, int weight) {
-        Vertex<L> s = ensureVertexByName(source);
+    	assert checkRep();
+    	Vertex<L> s = ensureVertexByName(source);
         Vertex<L> t = ensureVertexByName(target);
         
         return s.setEdgeTo(t, weight);
     }
     
     @Override public void set(L source, L target) {
+    	assert checkRep();
     	Vertex<L> s = ensureVertexByName(source);
     	Vertex<L> t = ensureVertexByName(target);
     	
@@ -80,7 +88,8 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public boolean remove(L vertex) {
-        Vertex<L> v = getVertexByName(vertex);
+    	assert checkRep();
+    	Vertex<L> v = getVertexByName(vertex);
         if (v == null)
         	return false;
         vertices.remove(v);
@@ -93,7 +102,8 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public Set<L> vertices() {
-        Set<L> s = new HashSet<>();
+    	assert checkRep();
+    	Set<L> s = new HashSet<>();
     	for (Vertex<L> v: vertices) {
     		s.add(v.getName());
     	}
@@ -101,6 +111,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public Map<L, Integer> sources(L target) {
+    	assert checkRep();
     	Map<L, Integer> sources = new HashMap<>();
     	for (Vertex<L> v: vertices) {
     		Vertex<L> t = getVertexByName(target);
@@ -113,7 +124,8 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public Map<L, Integer> targets(L source) {
-        Map<L, Integer> targets = new HashMap<>();
+    	assert checkRep();
+    	Map<L, Integer> targets = new HashMap<>();
         Vertex<L> v = getVertexByName(source);
         assert v != null;
         for (Map.Entry<Vertex<L>, Integer> e: v.getOutwardEdges().entrySet())
@@ -122,6 +134,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     @Override public String toString() {
+    	assert checkRep();
     	StringBuilder sb = new StringBuilder();
     	sb.append(String.format("%s@{", getClass().getName()));
     	for (Vertex<L> v: vertices)
@@ -132,47 +145,52 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
 }
 
 /**
- * TODO specification
+ * Class representing a vertex in a concrete vertices graph.
  * Mutable.
  * This class is internal to the rep of ConcreteVerticesGraph.
  * 
- * <p>PS2 instructions: the specification and implementation of this class is
- * up to you.
+ * Internally, it stores a map of the vertices to which it has
+ * edges (and the weight of that edge). 
+ * Vertex doesn't know about any edges originating from other 
+ * vertices, even if they point to it.
  */
 class Vertex<L> {
     
     
-	// Refers to edges leading away from is vertex ONLY.
+	// Refers to edges leading away from this vertex ONLY.
 	private Map<Vertex<L>, Integer> edges;
 	
 	// The name of the vertex (can't be changed once assigned) 
 	private final L name;
     
     // Abstraction function:
-    //   TODO
+    //   AF(r) = a vertex, v, such that
+	//           v = r.edge_source
+	//           v.edges = { r.edge_target: r.edge_weight } 
+	//           
     // Representation invariant:
-	//	 No edge shold ever point to a null Vertex
+	//	 No edge should ever point to a null Vertex - i.e. the
+	//   'edges' map should never contain dangling references
+	//
     // Safety from rep exposure:
-    //   Return a copy of everything
+    //   Always returns a copy of the edges map
     
-    // TODO constructor
 	public Vertex(L name) {
-		this.name = name;
+    	this.name = name;
 		this.edges = new HashMap<Vertex<L>, Integer>();
 	}
     
-    // TODO checkRep
 	private boolean checkRep() {
-		for (Vertex<L> v: edges.keySet()) {
+		for (Vertex<L> v: edges.keySet())
 			if (v.equals(null))
 				return false;
-		}
 		return true;
 	}
 	
 	
 	public L getName() {
-		return name;
+		assert checkRep();
+    	return name;
 	}
     
     /**
@@ -188,7 +206,8 @@ class Vertex<L> {
      * 			no such edge
      */
 	public int setEdgeTo(Vertex<L> target, int weight) {
-		if (edges.containsKey(target)) {
+		assert checkRep();
+    	if (edges.containsKey(target)) {
 			if (weight == 0)
 				return edges.remove(target);
 			else
@@ -209,17 +228,24 @@ class Vertex<L> {
 	 * @return the value of the edge, or zero if there is no edge.
 	 */
 	public int getEdgeTo(Vertex<L> target) {
-		if (hasEdgeTo(target))
+		assert checkRep();
+    	if (hasEdgeTo(target))
 			return edges.get(target);
 		return 0;
 	}
 	
 	public Map<Vertex<L>, Integer> getOutwardEdges() {
-        return new HashMap<Vertex<L>, Integer>(edges);
+		assert checkRep();
+    	return new HashMap<Vertex<L>, Integer>(edges);
+	}
+	
+	public List<Vertex<L>> getTargets() {
+		return new ArrayList<>(edges.keySet());
 	}
 	
 	public boolean hasOutwardEdges() {
-		return edges.size() != 0;
+		assert checkRep();
+    	return edges.size() != 0;
 	}
 	
 	public boolean hasEdgeTo(Vertex<L> target) {
@@ -227,6 +253,7 @@ class Vertex<L> {
 	}
     
     public String toString() {
+    	assert checkRep();
     	StringBuilder sb = new StringBuilder();
     	sb.append(String.format("%s@{%s",
     		getClass().getName(), name));

@@ -23,7 +23,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     // Abstraction function:
     //   AF(r) = an ordered pair (V,E)
     // 		where V = { all v in r.vertices }
-    //		and E = { (e.getSource(), e.getTarget()) for e in edges }
+    //		and E = { (e.getSource(), e.getTarget()) for all e in r.edges }
     //		and there exists a W such that W(e) = e.getWeight() for all e in E.   
 
     // Representation invariant:
@@ -32,7 +32,6 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     // Safety from rep exposure:
     //  - set() puts all params into immutable Edge instances
     //  - vertices(), sources(), targets() return copies
-    //  - 
     
     // Default constructor will be fine here
     

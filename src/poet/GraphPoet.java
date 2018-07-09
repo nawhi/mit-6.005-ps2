@@ -9,10 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import graph.Graph;
 
@@ -63,11 +60,13 @@ public class GraphPoet {
     private final Graph<String> graph = Graph.empty();
     
     // Abstraction function:
-    //   TODO
+    //   AF(r) = a graph, g, such that
+    //       g.vertices() = r.unique_words_in_corpus
+    //       g.edges() = r.word_affinities
     // Representation invariant:
-    //   TODO
+    //   word data is immutable once assigned
     // Safety from rep exposure:
-    //   TODO
+    //   private graph object never returned in a function 
     
     /**
      * Create a new poet with the graph from corpus (as described above).
@@ -121,19 +120,17 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        List<String> words = new ArrayList<>(Arrays.asList(input.split("\\s+")));
+        List<String> words = Arrays.asList(input.split("\\s+"));
+        List<String> poem = new ArrayList<>(words);
         
-        /*
-         * Doesn't yet handle choosing the weightiest path
-         * if there is more than one available... this is TODO
-         */
-        for (int i=words.size()-2; i>=0; i--) {
-        	String bridge = findBridge(words.get(i), words.get(i+1));
+        // TODO choose weightiest path if there's more than 1
+        for (int i=poem.size()-2; i>=0; i--) {
+        	String bridge = findBridge(poem.get(i), poem.get(i+1));
         	if (bridge != null)
-        		words.add(i+1, bridge);
+        		poem.add(i+1, bridge);
         }
         StringBuilder sb = new StringBuilder();
-        for (String w: words) 
+        for (String w: poem) 
         	sb.append(w + " ");
         return sb.toString().trim();
     }
@@ -176,6 +173,8 @@ public class GraphPoet {
     	return result;
     }
     
-    // TODO toString()
+    @Override public String toString() {
+    	return "GraphPoet@{" + graph + "}";
+    }
     
 }
